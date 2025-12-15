@@ -194,7 +194,9 @@ layout: default
 ---
 
 # Volumetric Rendering
+
 <img src="./images/Volumetric Rendering.png" alt="Volumetric rendering" style="width: 100%;"/>
+
 ---
 layout: default
 ---
@@ -215,24 +217,31 @@ Before a sample at distance $t$ can contribute color to the camera, the ray must
 layout: default
 ---
 
-Equation for Transmittance
+# Rendering Equations
+
+
+## Equation for Transmittance
+
 $$T(t) = \exp\left( -\int_{t_{n}}^{t} \sigma(\mathbf{r}(s)) \, ds \right)$$
 
-Expected color $C(\mathbf{r})$ for a camera ray $\mathbf{r}(t) = \mathbf{o}+t\mathbf{d}$
+## Expected color 
+$C(\mathbf{r})$ for a camera ray $\mathbf{r}(t) = \mathbf{o}+t\mathbf{d}$
 $$C(\mathbf{r}) = \int_{t_n}^{t_f} T(t) \sigma(\mathbf{r}(t)) \mathbf{c}(\mathbf{r}(t),\mathbf{d}) \, dt$$
 
 ---
 layout: default
 ---
 
-# Computing the integral
+# Computing the Integral
+
 The integral is estimated by dividing the ray into $N$ equally spaced "bins." From each bin, a single sample is drawn uniformly at random
 <img src="./images/Sampling.png" alt="Stratified Sampling" style="width: 60%;"/>
 ---
 layout: default
 ---
 
-## Positional Encoding
+# Positional Encoding
+
 To capture high-frequency variations in color and geometry, the inputs $(\mathbf{x}, \mathbf{d})$ are mapped to a higher-dimensional space. 
 
 <img src="./images/Positional Encoding.png" alt="Positional Encoding" style="width: 100%;"/>
@@ -241,28 +250,36 @@ To capture high-frequency variations in color and geometry, the inputs $(\mathbf
 layout: default
 ---
 
-## Hierarchical Volume Sampling
+# Hierarchical Volume Sampling
 
 Evaluating the network densely at uniformly sampled points is inefficient. 
 
-Two networks are trained:
-1) Coarse Network
-2) Fine Network
+## Two networks are trained:
+
+* **Coarse Network**:
+  * Samples $N_c$ points along each ray using stratified sampling.
+  * Produces a coarse estimate of the scene.
+* **Fine Network**:
+  * Samples $N_f$ points along each ray, informed by the weights from the coarse network.
+  * Focuses on important regions to refine the estimate.
 
 ---
 layout: default
 ---
 
 ## Model Architecture
+
 <img src="./images/NeRF Model.png" alt="Model Architecture" style="width: 80%;"/>
 
 ---
 layout: default
 ---
 
-## Loss Term
+# Loss Term
 
 The loss is the total squared error between the rendered and true pixel colors for both the coarse and fine renderings.
+
+<img src="./images/nerf_loss.png" alt="NeRF Loss" style="width: 80%;"/>
 
 
 ---
