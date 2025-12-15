@@ -170,6 +170,102 @@ layout: section
 ## Neural Radiance Fields
 
 ---
+layout: default
+---
+
+# Overview
+<img src="./images/Nerf PNG.png" alt="NeRF Overview" style="width: 100%"/>
+
+---
+layout: default
+---
+# Continuous Representation of the space
+
+Every point in 3D space is defined by two essential properties:
+
+- **Color:** The light emitted by the point, represented by an $(r, g, b)$ value.
+- **Density ($\sigma$)**: The opacity of the point, measuring how much light it absorbs or blocks.
+
+We define a **Radiance Field** as a 5D vector-valued function which takes a 3D location $\mathbf{x} = (x, y, z)$ and a 2D viewing direction $(\theta, \phi)$ as an input and outputs 
+color $\mathbf{c} = (r, g, b)$ and a volume density $\sigma$.
+
+---
+layout: default
+---
+
+# Volumetric Rendering
+<img src="./images/Volumetric Rendering.png" alt="Volumetric rendering" style="width: 100%;"/>
+---
+layout: default
+---
+
+## 1. Volume Density ($\sigma$)
+
+Volume Density represents the differential probability that a ray will strike a particle at a specific 3D point. It is a function of 3D space $\mathbf{x}$ only. High $\sigma$ $\rightarrow$ Opaque region. Zero $\sigma$ $\rightarrow$ Empty space.
+
+## 2. Radiance $\mathbf{c}(r(t), \mathbf{d})$
+
+Radiance is the color emitted or reflected at a point towards the camera. It is dependent on both the position and the viewing direction.
+
+## 3. Transmittance $T(t)$
+
+Before a sample at distance $t$ can contribute color to the camera, the ray must reach it without being blocked by previous density. 
+
+---
+layout: default
+---
+
+Equation for Transmittance
+$$T(t) = \exp\left( -\int_{t_{n}}^{t} \sigma(\mathbf{r}(s)) \, ds \right)$$
+
+Expected color $C(\mathbf{r})$ for a camera ray $\mathbf{r}(t) = \mathbf{o}+t\mathbf{d}$
+$$C(\mathbf{r}) = \int_{t_n}^{t_f} T(t) \sigma(\mathbf{r}(t)) \mathbf{c}(\mathbf{r}(t),\mathbf{d}) \, dt$$
+
+---
+layout: default
+---
+
+# Computing the integral
+The integral is estimated by dividing the ray into $N$ equally spaced "bins." From each bin, a single sample is drawn uniformly at random
+<img src="./images/Sampling.png" alt="Stratified Sampling" style="width: 60%;"/>
+---
+layout: default
+---
+
+## Positional Encoding
+To capture high-frequency variations in color and geometry, the inputs $(\mathbf{x}, \mathbf{d})$ are mapped to a higher-dimensional space. 
+
+<img src="./images/Positional Encoding.png" alt="Positional Encoding" style="width: 100%;"/>
+
+---
+layout: default
+---
+
+## Hierarchical Volume Sampling
+
+Evaluating the network densely at uniformly sampled points is inefficient. 
+
+Two networks are trained:
+1) Coarse Network
+2) Fine Network
+
+---
+layout: default
+---
+
+## Model Architecture
+<img src="./images/NeRF Model.png" alt="Model Architecture" style="width: 80%;"/>
+
+---
+layout: default
+---
+
+## Loss Term
+
+The loss is the total squared error between the rendered and true pixel colors for both the coarse and fine renderings.
+
+
+---
 layout: section
 ---
 
