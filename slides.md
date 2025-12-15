@@ -33,17 +33,24 @@ layout: section
 # History
 
 ---
-layout: image-right
-image: image.png
+layout: default
 ---
 
 # Physcially-based Rendering (PBR)
 ## Traditional approach to generate a 3D scene
 
+<img src="./images/pbr.png" alt="PBR Pipeline" style="width: 600px; float: right;"/>
+
+**Key Steps:**
+
 * Artists create geometry using triangular meshes
+
 * Material is assigned to the geometry
+
 * Cameras and Light sources are placed in the scene
+
 * Rendering algorithms simulate light transport to give radiance to the geometry
+
 
 ---
 layout: two-cols-header
